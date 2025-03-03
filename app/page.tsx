@@ -8,7 +8,6 @@ const PersonPage: React.FC = () => {
   const { person, loading, error } = usePerson(userSeed);
 
   const handleFetchNewPerson = () => {
-    // Generate a new seed or use a different method to fetch a new person
     setUserSeed(Math.random().toString(36).substring(7));
   };
 
