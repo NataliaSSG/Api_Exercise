@@ -1,25 +1,22 @@
 'use client';
-import React, { useState } from 'react';
-import usePerson from './hooks/usePerson';
-import PersonCard from './components/PersonCard';
+import { usePeopleApi } from "./hooks/usePeopleApi";
 
-const PersonPage: React.FC = () => {
-  const [userSeed, setUserSeed] = useState<string>('defaultSeed');
-  const { person, loading, error } = usePerson(userSeed);
+export default function Home() {
 
-  const handleFetchNewPerson = () => {
-    setUserSeed(Math.random().toString(36).substring(7));
-  };
+  const { currentPerson, personHistory, error, loading, fetchData } = usePeopleApi()
+
+  if (error) return <div>Error loading data</div>; 
 
   return (
     <div>
-      <h1>Person Card</h1>
-      <button onClick={handleFetchNewPerson}>Fetch New Person</button>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
-      {person && <PersonCard person={person} />}
+      <button onClick={fetchData} style={{ position: 'absolute', top: 10, right: 10, backgroundColor: 'blue', color: 'white'  }}>
+        Fetch Data
+      </button>
+      {loading && <div style={{ textAlign: 'center', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}>Loading...</div>}
+      <h1>Current Person</h1>
+      <pre>{JSON.stringify(currentPerson, null, 2)}</pre>
+      <h1>Person history</h1>
+      <pre>{JSON.stringify(personHistory, null, 2)}</pre>
     </div>
   );
-};
-
-export default PersonPage;
+}
